@@ -30,7 +30,7 @@ public class Chat {
     private UUID user2Id;
 
     @Column (nullable = false)
-    private boolean closed;
+    private boolean closed = false;
 
     @Column (nullable = false)
     private Instant createdAt;
