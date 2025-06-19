@@ -2,6 +2,7 @@ package com.fromzero.chatservice.domain.model.aggregates;
 
 import com.chattest.chat.entity.enums.MessageType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fromzero.chatservice.domain.model.commands.CreateChatMessageCommand;
 import com.fromzero.shared.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +45,15 @@ public class ChatMessage extends AuditableAbstractAggregateRoot<ChatMessage> {
         this.sender = sender;
         this.content = s;
         this.type = MessageType.valueOf(join);
+        this.timestamp = Instant.now();
+    }
+
+    public ChatMessage(CreateChatMessageCommand command) {
+        this.senderId = command.senderId();
+        this.sender = command.sender();
+        this.content = command.content();
+        this.projectId = command.projectId();
+        this.type = command.type();
         this.timestamp = Instant.now();
     }
 

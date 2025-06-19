@@ -2,6 +2,7 @@ package com.chattest.chat.entity;
 
 import com.chattest.chat.entity.enums.MessageType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fromzero.chatservice.domain.model.commands.CreateChatMessageCommand;
 import lombok.*;
 
 import java.time.Instant;
