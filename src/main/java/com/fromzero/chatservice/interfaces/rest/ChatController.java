@@ -2,11 +2,16 @@ package com.fromzero.chatservice.interfaces.rest;
 
 import com.fromzero.chatservice.domain.services.ChatCommandService;
 import com.fromzero.chatservice.domain.services.ChatQueryService;
+import com.fromzero.chatservice.interfaces.rest.resources.CreateChatResource;
+import com.fromzero.chatservice.interfaces.rest.transform.CreateChatCommandFromResourceAssembler;
+import com.fromzero.chatservice.interfaces.rest.transform.CreateChatResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +27,13 @@ public class ChatController {
         this.chatCommandService = chatCommandService;
     }
 
-    @PostMapping("/create-chat")
-    public ResponseEntity<String> createChat(@RequestBody ChatMessage chatMessage) {}
+    @PostMapping("/")
+    public ResponseEntity<CreateChatResource> createChat(@RequestBody CreateChatResource createChatResource) {
+        var createChatCommand = CreateChatCommandFromResourceAssembler.toCommandFromResource(createChatResource);
+        var chat = this.chatCommandService.handle(createChatCommand);
+        var chatResource = CreateChatResourceFromEntityAssembler.toResourceFromEntity(chat.get());
+
+        return new ResponseEntity<>(chatResource, HttpStatus.CREATED);
+    }
 
 }
