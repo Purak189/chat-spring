@@ -21,7 +21,7 @@ import java.util.UUID;
 public class AuditableAbstractAggregateRoot<T extends AbstractAggregateRoot<T>> extends AbstractAggregateRoot<T> {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(columnDefinition = "UUID")
     private UUID id = UUID.randomUUID();
 
     @CreatedDate

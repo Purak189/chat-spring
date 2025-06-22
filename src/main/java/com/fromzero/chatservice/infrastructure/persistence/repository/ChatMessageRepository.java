@@ -9,5 +9,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.UUID;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, UUID>, PagingAndSortingRepository<ChatMessage, UUID> {
-    Page<ChatMessage> findByOrderByTimestampDesc(Pageable pageable);
+    Page<ChatMessage> findByProjectIdOrderByTimestampDesc(UUID projectId, Pageable pageable);
 }

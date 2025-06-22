@@ -15,13 +15,13 @@ import java.util.UUID;
 @Setter
 public class Chat extends AuditableAbstractAggregateRoot<Chat> {
 
-    @Column (nullable = false, unique = true)
+    @Column (columnDefinition = "UUID", nullable = false, unique = true)
     private UUID projectId;
 
-    @Column (nullable = false)
+    @Column (columnDefinition = "UUID", nullable = false)
     private UUID user1Id;
 
-    @Column (nullable = false)
+    @Column (columnDefinition = "UUID", nullable = false)
     private UUID user2Id;
 
     @Column (nullable = false)

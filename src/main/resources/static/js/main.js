@@ -41,7 +41,10 @@ function onConnected() {
     });
 
     // Luego suscribirse al topic del proyecto
-    stompClient.subscribe(`/topic/project/${projectId}`, onMessageReceived);
+    stompClient.subscribe(`/topic/project/${projectId}`, function (messageOutput) {
+        console.log('Received message:', messageOutput);
+        onMessageReceived(messageOutput);
+    });
 
     // Finalmente enviar el mensaje JOIN para validación
     stompClient.send(`/app/chat.join.${projectId}`, {}, JSON.stringify({

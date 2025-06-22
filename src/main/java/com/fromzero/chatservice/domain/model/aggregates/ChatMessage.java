@@ -1,8 +1,8 @@
 package com.fromzero.chatservice.domain.model.aggregates;
 
-import com.chattest.chat.entity.enums.MessageType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fromzero.chatservice.domain.model.commands.CreateChatMessageCommand;
+import com.fromzero.chatservice.domain.model.valueobjects.MessageType;
 import com.fromzero.shared.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "chatMessage")
+@Table(name = "chat_message")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,10 +27,10 @@ public class ChatMessage extends AuditableAbstractAggregateRoot<ChatMessage> {
     @Column(nullable = false)
     private String sender;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "UUID", nullable = false)
     private UUID projectId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "UUID", nullable = false)
     @JsonProperty("senderId")
     private UUID senderId;
 
