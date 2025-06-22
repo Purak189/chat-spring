@@ -53,6 +53,8 @@ function onConnected() {
         projectId: projectId,
         type: 'JOIN'
     }));
+
+    loadChatHistory(projectId);
 }
 
 function disconnectAndReset() {
@@ -128,6 +130,65 @@ function onMessageReceived(payload) {
 
     messageElement.appendChild(textElement);
 
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+}
+
+function loadChatHistory(projectId) {
+    // Hacemos una solicitud para obtener los mensajes históricos del proyecto
+    fetch(`/api/v1/chat-messages/messages/${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Recorremos los mensajes cargados y los mostramos en el chat
+            if (data.content && data.content.length > 0) {
+                data.content.forEach(message => {
+                    displayMessage(message);
+                });
+            } else {
+                console.log("No messages found for project:", projectId);
+            }
+        })
+        .catch(error => {
+            console.error("Error loading messages:", error);
+        });
+}
+
+function displayMessage(message) {
+    let messageElement = document.createElement('li');
+
+    // Si es un mensaje de tipo 'JOIN' o 'LEAVE', lo tratamos de forma especial
+    if (message.type === 'JOIN') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' joined!';
+    } else if (message.type === 'LEAVE') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' left!';
+    } else {
+        messageElement.classList.add('chat-message');
+
+        // Verificar si message.sender está definido antes de acceder a su primer carácter
+        let avatarElement = document.createElement('i');
+        let avatarText = document.createTextNode(message.sender ? message.sender[0] : 'U'); // 'U' para "Unknown" o alguna letra por defecto
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender || 'Unknown');  // Color predeterminado
+
+        messageElement.appendChild(avatarElement);
+
+        // Nombre de usuario
+        let usernameElement = document.createElement('span');
+        let usernameText = document.createTextNode(message.sender || 'Unknown');  // Nombre predeterminado
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+    }
+
+    // Contenido del mensaje
+    let textElement = document.createElement('p');
+    let messageText = document.createTextNode(message.content);
+    textElement.appendChild(messageText);
+
+    messageElement.appendChild(textElement);
+
+    // Agregar el mensaje al área de mensajes
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }

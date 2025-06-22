@@ -23,11 +23,11 @@ public class ChatMessageController {
         this.chatMessageQueryService = chatMessageQueryService;
     }
 
-    @GetMapping("/chat/messages/{projectId}")
+    @GetMapping("/messages/{projectId}")
     public ResponseEntity<Optional<Page<ChatMessage>>> getMessages(
             @PathVariable UUID projectId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "20") int size
     ) {
         var chatMessageQuery = new PaginatedChatMessageQuery(projectId, page, size);
         var chatMessagesPage = this.chatMessageQueryService.handle(chatMessageQuery);
